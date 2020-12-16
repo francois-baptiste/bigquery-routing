@@ -10,7 +10,6 @@ return JSON.stringify({"weight": myresult.weight, "geojson":{"type": "LineString
 catch (e) {
   return(null)
 }
-
 """;
 CREATE TEMP FUNCTION nearestpoint(mypoint GEOGRAPHY, mypoints array<GEOGRAPHY>) AS ((
 With EXTRACTED_POINTS as (
@@ -36,9 +35,8 @@ OUTPUT as (
 select geojson_path_finder_(geojson,ST_X(start_nearest),ST_Y(start_nearest),ST_X(finish_nearest),ST_Y(finish_nearest)) myresult
 from SOME_NETWORK)
 
-select STRUCT(safe.ST_GEOGFROMGEOJSON(JSON_EXTRACT(myresult, '$.geojson')) as geog,
-       CAST(JSON_EXTRACT(myresult, '$.weight') as FLOAT64) as weight,
-       JSON_EXTRACT(myresult, '$.geojson') as geojson)
+select STRUCT(CAST(JSON_EXTRACT(myresult, '$.weight') as FLOAT64) as weight,
+       safe.ST_GEOGFROMGEOJSON(JSON_EXTRACT(myresult, '$.geojson')) as path)
        from OUTPUT
 
 ));
@@ -59,8 +57,6 @@ where full_name="Union Pacific RR" and ST_DISTANCE(railway_geom, ST_GEOGPOINT(-9
 )
 
 
-select a.city, b.city, geojson_path_finder(railways, ST_GEOGPOINT(a.lon,a.lat), ST_GEOGPOINT(b.lon,b.lat))
+select a.city, b.city, geojson_path_finder(railways, ST_GEOGPOINT(a.lon,a.lat), ST_GEOGPOINT(b.lon,b.lat)) shortest_path
 FROM mynetwork , SOME_CITIES a, SOME_CITIES b
 where a.city>b.city
-
-
