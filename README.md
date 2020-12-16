@@ -7,7 +7,7 @@ This project wraps [Per Liedman's GeoJSON Path Finder library](https://github.co
 ## Off-the-Shelf Demo
 For this demo we use an webpack version of the [Per Liedman's GeoJSON Path Finder library with some tweaks](https://github.com/francois-baptiste/geojson-path-finder/blob/webpack/geojson_path_finder.js) that I host for you on publicly GCS at gs://bigquery-geolib/geojson_path_finder.js
 
-We also use one of the few network available from BigQuery public dataset: `bigquery-public-data:geo_us_boundaries.railways`. Unfortunately, the network is discontinuous in several places, thus preventing significant routing planning. If you want a great interconnected railroads network, I avise you looking at the [Natural Earth dataset](##playing-with-natural-earth-dataset)
+We also use one of the few network available from BigQuery public dataset: `bigquery-public-data:geo_us_boundaries.railways`. Unfortunately, the network is discontinuous in several places, thus preventing significant routing planning. If you want great railroads network datasets, I advise you to look at the [Natural Earth dataset](#playing-with-natural-earth-dataset).
 
 Open a Bigquery console, copy, paste and run [this query](query.sql).
 
