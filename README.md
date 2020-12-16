@@ -23,6 +23,11 @@ This query returns for each couple of cities the weight (the distance in this ca
 You can reproduce the path finding logic directly on your browser using the same JS library through the following demo page https://francois-baptiste.github.io/Bigquery_shortest_path/.
 
 ## Playing with Natural Earth dataset
+I write a python script intended to be run on the Google Cloud Shell to load [Natural Earth dataset](https://www.naturalearthdata.com/).
+You can get the gist [here](https://gist.github.com/francois-baptiste/bd6694dbcab836aa1e1bb96815a13a8d).
+
+
+It creates a Bigquery dataset named `natural_earth_vector` containing a lot of tables with geography of states, provinces, boundary, countries, regions, rivers, lakes , islands, ocean, populated area, ice shelves, coastline, parks, airports, ports, railroads, roads...
 
 
 
