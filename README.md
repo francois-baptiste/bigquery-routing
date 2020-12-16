@@ -6,7 +6,7 @@ This project wraps [Per Liedman's GeoJSON Path Finder library](https://github.co
 
 ## Demo
 
-This quick start use a webpack version of the [Per Liedman's GeoJSON Path Finder library with some tweaks](https://github.com/francois-baptiste/geojson-path-finder/) I personaly host on google clood storage and publicly available at gs://bigquery-geolib/geojson_path_finder.js
+This quick start use a webpack version of the [Per Liedman's GeoJSON Path Finder library with some tweaks](https://github.com/francois-baptiste/geojson-path-finder/blob/webpack/geojson_path_finder.js) I personaly host on google clood storage and publicly available at gs://bigquery-geolib/geojson_path_finder.js
 
 
 Open a Bigquery console, copy, paste and run [this query](query.sql).
