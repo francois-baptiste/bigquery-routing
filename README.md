@@ -1,5 +1,5 @@
-# Bigquery_shortest_path
-Bigquery user-defined functions (UDFs) for pathfinding.
+# Bigquery routing
+Bigquery user-defined functions (UDFs) for routing/path finding.
 Find shortest path beetween to points through a network of Bigquery geography.
 
 This project wraps [Per Liedman's GeoJSON Path Finder library](https://github.com/perliedman/geojson-path-finder/) to be run on Bigquery.
@@ -20,7 +20,8 @@ This query returns for each couple of cities the weight (the distance in this ca
 
 
 
-You can reproduce the path finding logic directly on your browser using the same JS library through the following demo page https://francois-baptiste.github.io/Bigquery_shortest_path/.
+You can reproduce the path finding logic directly on your browser using the same JS library through the following demo page https://francois-baptiste.github.io/bigquery-routing
+/.
 
 ## Playing with Natural Earth dataset
 I write a python script intended to be run on the Google Cloud Shell to load [Natural Earth dataset](https://www.naturalearthdata.com/).
