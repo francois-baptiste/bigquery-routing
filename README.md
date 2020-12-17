@@ -69,7 +69,9 @@ where a.city>b.city
 ```
 ![demo](./img/demo2.png)
 
-You can reproduce the path finding logic directly on your browser using the same JS library through the following demo page https://francois-baptiste.github.io/bigquery-routing/.
+
+You can reproduce the path search logic directly on your browser using the same JS library via the Per Liedman's demo page adapted for the circumstance:
+https://francois-baptiste.github.io/bigquery-routing/.
 
 ## Playing with OpenStreetMap data snapshot accessible from BigQuery
 
