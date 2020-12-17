@@ -9,13 +9,31 @@ For this demo we use an webpack version of the [Per Liedman's GeoJSON Path Finde
 
 We also use one of the few network available from BigQuery public dataset: `bigquery-public-data:geo_us_boundaries.railways`. Unfortunately, the network is discontinuous in several places, thus preventing significant routing planning. If you want great railroads network datasets, I advise you to look at the [Natural Earth dataset](#playing-with-natural-earth-dataset).
 
-Open a Bigquery console, copy, paste and run [this query](query.sql).
-
+Open a Bigquery console, copy, paste and run this query:
+```sql
+WITH SOME_CITIES as (
+select "OSKALOOSA " city, 41.290438 lat, -92.638499 lon union all 
+select "NEW SHARON " city, 41.470103 lat, -92.650924 lon union all
+select "GRINELL " city, 41.738154 lat, -92.724915 lon union all
+select "MARSCHALLTOWN " city, 42.049467 lat, -92.908037 lon union all
+select "COLO " city, 42.014482 lat, -93.318599 lon union all
+select "DES MOINES " city, 41.619549 lat, -93.598022 lon
+),
+mynetwork as (
+select array_agg(railway_geom) railways
+FROM `bigquery-public-data.geo_us_boundaries.railways`
+where full_name="Union Pacific RR" and ST_DISTANCE(railway_geom, ST_GEOGPOINT(-93,42)) <100000
+)
+select a.city, b.city, libjs4us.routing.geojson_path_finder(railways, ST_GEOGPOINT(a.lon,a.lat), ST_GEOGPOINT(b.lon,b.lat)) shortest_path
+FROM mynetwork , SOME_CITIES a, SOME_CITIES b
+where a.city>b.city
+```
+This query returns for each couple of cities the weight (the distance in this case) and the path of the shortest route through the rail network:
 
 ![demo](./img/demo.png)
 
 
-This query returns for each couple of cities the weight (the distance in this case) and the path of the shortest route through the rail network.
+
 
 
 
@@ -30,6 +48,35 @@ You can get the gist [here](https://gist.github.com/francois-baptiste/bd6694dbca
 
 It creates a Bigquery dataset named `natural_earth_vector` containing a lot of tables with geography of states, provinces, boundary, countries, regions, rivers, lakes , islands, ocean, populated area, ice shelves, coastline, parks, airports, ports, railroads, roads...
 
+You can now test the routing algorithm at a larger scale over the neatly connected natural earth railroads database:
 
+```
+WITH SOME_CITIES as (
+select "New York" city, 40.6943 lat, -73.9249 lon union all
+select "Los Angeles" city, 34.1139 lat, -118.4068 lon union all
+select "Chicago" city, 41.8373 lat, -87.6862 lon union all
+select "Miami" city, 25.7839 lat, -80.2102 lon union all
+select "Dallas" city, 32.7936 lat, -96.7662 lon union all
+select "Philadelphia" city, 40.0077 lat, -75.1339 lon union all
+select "Houston" city, 29.7863 lat, -95.3889 lon union all
+select "Atlanta" city, 33.7627 lat, -84.4224 lon union all
+select "Washington" city, 38.9047 lat, -77.0163 lon union all
+select "Boston" city, 42.3188 lat, -71.0846 lon union all
+select "Phoenix" city, 33.5722 lat, -112.0891 lon union all
+select "Seattle" city, 47.6211 lat, -122.3244 lon union all
+select "San Francisco" city, 37.7562 lat, -122.443 lon union all
+select "Detroit" city, 42.3834 lat, -83.1024 lon 
+),
+mynetwork as (
+select array_agg(ST_GEOGFROMGEOJSON(GEOMETRY)) railways
+FROM `replace_with_your_dataset.natural_earth_vector.ne_10m_railroads_north_america`
+)
+select a.city, b.city, `libjs4us.routing.geojson_path_finder`(railways, ST_GEOGPOINT(a.lon,a.lat), ST_GEOGPOINT(b.lon,b.lat))
+FROM mynetwork , SOME_CITIES a, SOME_CITIES b
+where a.city>b.city
+```
+![demo](./img/demo2.png)
 
 ## Playing with OpenStreetMap data snapshot accessible from BigQuery
+
+TODO
