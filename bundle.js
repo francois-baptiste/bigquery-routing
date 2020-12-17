@@ -84,8 +84,8 @@ function initialize(network) {
         }).addTo(map);
 
     control.setWaypoints([
-        [41.290438, -92.638499],
-        [42.049467, -92.908037],
+        [40.6943, -73.9249],
+        [37.7562, -122.443],
     ]);
 
     var totalDistance = network.features.reduce(function(total, feature) {
