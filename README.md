@@ -5,7 +5,7 @@ Find shortest path through a network of Bigquery geography.
 This project wraps [Per Liedman's GeoJSON Path Finder library](https://github.com/perliedman/geojson-path-finder/) to be run on Bigquery.
 
 ## Off-the-Shelf Demo
-For this demo we use an webpack version of the [Per Liedman's GeoJSON Path Finder library with some tweaks](https://github.com/francois-baptiste/geojson-path-finder/blob/webpack/geojson_path_finder.js) that I host for you on publicly GCS at gs://bigquery-geolib/geojson_path_finder.js
+For this demo we use an webpack version of the [Per Liedman's GeoJSON Path Finder library with some tweaks](https://github.com/francois-baptiste/geojson-path-finder/blob/webpack/geojson_path_finder.js) that I host for you on publicly GCS at gs://bigquery-geolib/geojson_path_finder.js. I also host routing UDFs on US and EU Bigquery dataset publicly available at `libjs4us.routing` and  `libjs4eu.routing`.
 
 We also use one of the few network available from BigQuery public dataset: `bigquery-public-data:geo_us_boundaries.railways`. Unfortunately, the network is discontinuous in several places, thus preventing significant routing planning. If you want great railroads network datasets, I advise you to look at the [Natural Earth dataset](#playing-with-natural-earth-dataset).
 
@@ -35,43 +35,11 @@ This query returns for each couple of cities the weight (the distance in this ca
 
 ## Playing with Natural Earth dataset
 I write a python script intended to be run on the Google Cloud Shell to load [Natural Earth dataset](https://www.naturalearthdata.com/).
-You can get the gist [here](https://gist.github.com/francois-baptiste/bd6694dbcab836aa1e1bb96815a13a8d).
-
+You can get the python script [here](/examples/natural_earth/natural_earth_to_bq.py).
 
 It creates a Bigquery dataset named `natural_earth_vector` containing a lot of tables with geography of states, provinces, boundary, countries, regions, rivers, lakes , islands, ocean, populated area, ice shelves, coastline, parks, airports, ports, railroads, roads...
 
-You can now test the routing algorithm at a larger scale over the neatly connected natural earth railroads database:
-
-```
-WITH SOME_CITIES as (
-select "New York" city, 40.6943 lat, -73.9249 lon union all
-select "Los Angeles" city, 34.1139 lat, -118.4068 lon union all
-select "Chicago" city, 41.8373 lat, -87.6862 lon union all
-select "Miami" city, 25.7839 lat, -80.2102 lon union all
-select "Dallas" city, 32.7936 lat, -96.7662 lon union all
-select "Philadelphia" city, 40.0077 lat, -75.1339 lon union all
-select "Houston" city, 29.7863 lat, -95.3889 lon union all
-select "Atlanta" city, 33.7627 lat, -84.4224 lon union all
-select "Washington" city, 38.9047 lat, -77.0163 lon union all
-select "Boston" city, 42.3188 lat, -71.0846 lon union all
-select "Phoenix" city, 33.5722 lat, -112.0891 lon union all
-select "Seattle" city, 47.6211 lat, -122.3244 lon union all
-select "San Francisco" city, 37.7562 lat, -122.443 lon union all
-select "Detroit" city, 42.3834 lat, -83.1024 lon 
-),
-mynetwork as (
-select array_agg(ST_GEOGFROMGEOJSON(GEOMETRY)) railways
-FROM `replace_with_your_dataset.natural_earth_vector.ne_10m_railroads_north_america`
-)
-select a.city, b.city, `libjs4us.routing.geojson_path_finder`(railways, ST_GEOGPOINT(a.lon,a.lat), ST_GEOGPOINT(b.lon,b.lat))
-FROM mynetwork , SOME_CITIES a, SOME_CITIES b
-where a.city>b.city
-```
-![demo](./img/demo2.png)
-
-
-NOTE: For EU located data the same function is available at `libjs4eu.routing` dataset.
-
+You can now test the routing algorithm at a larger scale over the neatly connected natural earth railroads database using this [here](/examples/natural_earth/query.sql).
 
 You can reproduce the path search logic directly on your browser using the same JS library via the Per Liedman's [demo page adapted for the circumstance](https://francois-baptiste.github.io/bigquery-routing/).
 
