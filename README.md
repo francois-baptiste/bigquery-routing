@@ -73,8 +73,7 @@ where a.city>b.city
 NOTE: For EU located data the same function is available at `libjs4eu.routing` dataset.
 
 
-You can reproduce the path search logic directly on your browser using the same JS library via the Per Liedman's demo page adapted for the circumstance:
-https://francois-baptiste.github.io/bigquery-routing/.
+You can reproduce the path search logic directly on your browser using the same JS library via the Per Liedman's [demo page adapted for the circumstance](https://francois-baptiste.github.io/bigquery-routing/).
 
 ## Weight functions
 
