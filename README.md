@@ -76,6 +76,16 @@ NOTE: For EU located data the same function is available at `libjs4eu.routing` d
 You can reproduce the path search logic directly on your browser using the same JS library via the Per Liedman's demo page adapted for the circumstance:
 https://francois-baptiste.github.io/bigquery-routing/.
 
+## Weight functions
+
+By default, the _cost_ of going from one node in the network to another is determined simply by
+the geographic distance between the two nodes. This means that, by default, shortest paths will be found.
+You can however override this by providing a cost calculation function through the `weightFn` option
+
+The [live demo](available at https://francois-baptiste.github.io/geojson-path-finder/] around Gothenburg proposed by Per Liedman uses the speed limit extacted from OSM to choose the fastest route in terms of time.
+You can load the graph to bigquery from google cloud shell using this python [script](/examples/custom_weightFn/upload_network_to_bigquery.py) and run this demo on bigquery using this [query](/examples/custom_weightFn/query.sql).
+
+You can download the network to bigquery 
 ## Playing with OpenStreetMap data snapshot accessible from BigQuery
 
 TODO
