@@ -82,7 +82,7 @@ By default, the _cost_ of going from one node in the network to another is deter
 the geographic distance between the two nodes. This means that, by default, shortest paths will be found.
 You can however override this by providing a cost calculation function through the `weightFn` option
 
-The [live demo](available at https://francois-baptiste.github.io/geojson-path-finder/] around Gothenburg proposed by Per Liedman uses the speed limit extacted from OSM to choose the fastest route in terms of time.
+The [live demo](https://francois-baptiste.github.io/geojson-path-finder/] around Gothenburg proposed by Per Liedman uses the speed limit extacted from OSM to choose the fastest route in terms of time.
 You can load the graph to bigquery from google cloud shell using this python [script](/examples/custom_weightFn/upload_network_to_bigquery.py) and run this demo on bigquery using this [query](/examples/custom_weightFn/query.sql).
 
 You can download the network to bigquery 
