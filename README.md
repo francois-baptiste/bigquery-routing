@@ -1,6 +1,6 @@
 # Bigquery routing
 Bigquery user-defined functions (UDFs) for routing/path finding.
-Find shortest path beetween to points through a network of Bigquery geography.
+Find shortest path through a network of Bigquery geography.
 
 This project wraps [Per Liedman's GeoJSON Path Finder library](https://github.com/perliedman/geojson-path-finder/) to be run on Bigquery.
 
