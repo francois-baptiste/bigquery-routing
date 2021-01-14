@@ -27,3 +27,8 @@ AS """
     return(null);
   }
 """;
+
+-- USAGE EXAMPLE
+-- select  
+--    `data-science-229608.routing_us.geojson_find_points_around`(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 200 )
+-- from `data-science-229608.routing_us.france_network`;
