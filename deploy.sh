@@ -48,7 +48,7 @@ envsubst < $query_file > query_file_new.sql
 
 # deploy UDF function to BQ
 # TODO add a directory of queries
-bq --dataset_id=$dataset --location=$location query < query_file_new.sql
+bq --dataset_id=$dataset --location=$location query --use_legacy_sql=false < query_file_new.sql
 
 # cleanup
 cd ..
