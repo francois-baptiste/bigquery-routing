@@ -1,20 +1,35 @@
 CREATE TEMP FUNCTION geojson_find_points_around_(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
 RETURNS STRING LANGUAGE js
 OPTIONS (
-  library=["gs://bigquery-geolib/geojson_path_finder.js"]
+  library=["gs://bogdan-tools/geojson_path_finder.js"]
 )
 AS """
   var start = {type: "Feature", geometry: { coordinates:[startx, starty], type: "Point" }};
   var maxCost = max_cost;
-  var pathFinder = new geojsonPathFinder(JSON.parse(geojson, { precision: 1e-3 }));
+  var pathFinder = new geojsonPathFinder(JSON.parse(geojson));
+
   var nodes = pathFinder.findPointsAround(start, maxCost);
   try {
-    return JSON.stringify({ "coordinates": nodes, "type": "MultiPoint" });
+    return JSON.stringify({
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "MultiPoint",
+            coordinates: nodes
+          }
+        }
+      ]
+    });
   }
   catch (e) {
     return(null);
   }
 """;
+select
+  geojson_find_points_around_(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 5  )
+from `data-science-229608.routing_us.france_network`;
 
 
 -- CREATE TEMP FUNCTION nearestpoint(mypoint GEOGRAPHY, mypoints array<GEOGRAPHY>) AS ((
