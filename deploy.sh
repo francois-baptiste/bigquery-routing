@@ -22,8 +22,9 @@ while [ $# -gt 0 ]; do
 done
 
 # clone repo
-git clone https://github.com/francois-baptiste/geojson-path-finder
+git clone https://github.com/xbogdan/geojson-path-finder.git
 cd geojson-path-finder
+git checkout feature/find-points-around
 
 # install packages
 npm install
@@ -35,10 +36,14 @@ webpack
 # copy to gcp
 gsutil cp dist/geojson_path_finder.js $gcp_file_path
 
+git clone https://github.com/xbogdan/bigquery-routing.git
+cd bigquery-routing
+git checkout feature/find-points-around
+
 # format query file
-export $DATASET=$dataset
-export $PROJECT_ID=$project_id
-export $BUCKET_FILE_PATH=$gcp_file_path
+export DATASET="$dataset"
+export PROJECT_ID="$project_id"
+export BUCKET_FILE_PATH="$gcp_file_path"
 envsubst < $query_file > query_file_new.sql
 
 # deploy UDF function to BQ
@@ -47,5 +52,5 @@ bq --dataset_id=$dataset --location=$location query < query_file_new.sql
 
 # cleanup
 cd ..
-rm -rf geojson-path-finder
+rm -rf geojson-path-finder bigquery-routing
 

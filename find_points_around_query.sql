@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION `$PRJECT_ID.$DATASET.geojson_find_points_around`(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
+CREATE OR REPLACE FUNCTION `$PROJECT_ID.$DATASET.geojson_find_points_around`(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
 RETURNS STRING LANGUAGE js
 OPTIONS (
   library=["$BUCKET_FILE_PATH"]
