@@ -1,7 +1,7 @@
-CREATE TEMP FUNCTION geojson_find_points_around_(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
+CREATE OR REPLACE FUNCTION `$PRJECT_ID.$DATASET.geojson_find_points_around`(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
 RETURNS STRING LANGUAGE js
 OPTIONS (
-  library=["gs://bogdan-tools/geojson_path_finder.js"]
+  library=["$BUCKET_FILE_PATH"]
 )
 AS """
   var start = {type: "Feature", geometry: { coordinates:[startx, starty], type: "Point" }};
@@ -27,9 +27,9 @@ AS """
     return(null);
   }
 """;
-select
-  geojson_find_points_around_(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 5  )
-from `data-science-229608.routing_us.france_network`;
+-- select
+--   geojson_find_points_around(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 5  )
+-- from `data-science-229608.routing_us.france_network`;
 
 
 -- CREATE TEMP FUNCTION nearestpoint(mypoint GEOGRAPHY, mypoints array<GEOGRAPHY>) AS ((

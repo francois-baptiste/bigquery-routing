@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # How to run
-# ./deploy --bucket <google-storage-bucket-path> --location <big-query-location> --dataset <big-query-dataset-id> --query_file <path-to-file>
+# ./deploy --bucket <google-storage-bucket-path> --location <big-query-location> --dataset <big-query-dataset-id> --query_file <path-to-file> --project-id <project-id>
 
-bucket=${bucket}
+gcp_file_path=${gcp_file_path}
 dataset=${dataset}
+project_id=${project_id}
 location=${location}
 query_file=${query_file}
 
@@ -32,11 +33,17 @@ npm install webpack webpack-cli -g
 webpack
 
 # copy to gcp
-gsutil cp dist/geojson_path_finder.js $bucket
+gsutil cp dist/geojson_path_finder.js $gcp_file_path
+
+# format query file
+export $DATASET=$dataset
+export $PROJECT_ID=$project_id
+export $BUCKET_FILE_PATH=$gcp_file_path
+envsubst < $query_file > query_file_new.sql
 
 # deploy UDF function to BQ
 # TODO add a directory of queries
-bq --dataset_id=$dataset --location=$location query < $query_file
+bq --dataset_id=$dataset --location=$location query < query_file_new.sql
 
 # cleanup
 cd ..
