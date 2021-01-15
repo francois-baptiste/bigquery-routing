@@ -30,7 +30,7 @@ while [ $# -gt 0 ]; do
 done
 
 # clone repo
-git clone https://github.com/xbogdan/geojson-path-finder.git
+git clone --quiet https://github.com/xbogdan/geojson-path-finder.git
 cd geojson-path-finder
 git checkout feature/find-points-around
 
@@ -48,7 +48,7 @@ gsutil cp dist/geojson_path_finder.js $gcp_file_path
 cd ..
 
 # clone big query routing
-git clone https://github.com/xbogdan/bigquery-routing.git
+git clone --quiet https://github.com/xbogdan/bigquery-routing.git
 cd bigquery-routing
 git checkout feature/find-points-around
 cd ..

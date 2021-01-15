@@ -47,5 +47,5 @@ CREATE OR REPLACE FUNCTION `$PROJECT_ID.$DATASET.find_points_around`(lines array
 ));
 
 CREATE OR REPLACE FUNCTION `$PROJECT_ID.$DATASET.get_area_polygon`(lines array<GEOGRAPHY>, start GEOGRAPHY, max_cost FLOAT64) AS ((
-  SELECT ST_CONVEXHULL(`$PROJECT_ID.$DATASET.find_points_around`(lines, start, max_cost))
+  SELECT ST_CONVEXHULL(ST_GEOGFROMGEOJSON(`$PROJECT_ID.$DATASET.find_points_around`(lines, start, max_cost)))
 ));
